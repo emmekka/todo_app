@@ -1,0 +1,79 @@
+@startuml diargama
+
+enum Prioridad {
+    Alta
+    Media
+    Baja
+}
+
+enum Categoria {
+    Trabajo
+    Personal
+}
+
+enum EstadoTarea {
+    Pendiente
+    Completado
+}
+
+class Tarea {
+    -id: number
+    -titulo: string
+    -descripcion: string
+    -fechaVencimiento: Date
+    -prioridad: Prioridad
+    -estado: EstadoTarea
+    -progreso: number
+    -categoria: Categoria
+    -etiquetas: Etiqueta[]
+
+    +editarTarea()
+    +estaCompleta(): boolean
+}
+
+
+class GestorTareas {
+    -tareas: Tarea[]
+    -ordenar:Ordenar
+    -buscar:Buscar
+    -estadistica:Estadisticas
+
+    +editorTareas(t:Tarea):void
+    +agregarTarea(t: Tarea):void
+    +eliminarTarea(t:tarea):void
+    +buscarTarea(selector: (t: Tarea)=> string | Date): Tarea[]
+    +ordenarTareas(selector: (t: Tarea) => string | Date | Prioridad): Tarea[]
+    +obtenerEstadisticas(): Estadisticas
+}
+
+class Buscar {
+    +buscar(t:Array<Tarea>, selector: (t: Tarea)=> string | Date)
+}
+
+class Ordenar {
+    +ordenar(t:Array<Tarea>, selector: (t: Tarea) => string | Date | Prioridad):void
+}
+class Etiqueta {
+    -nombre: string
+
+    +aplicarEtiqueta(tarea: Tarea):void
+}
+
+class Estadisticas {
+    -tareasCompletadas: number
+    -tareasPendientes: number
+    -tiempoPromedio: number
+
+    +calcularEstadisticas(tareas: Tarea[])
+}
+
+Tarea --> Categoria
+Tarea <-- Etiqueta
+GestorTareas *.. Tarea
+GestorTareas <-- Estadisticas
+Tarea --> Prioridad
+Tarea --> EstadoTarea
+GestorTareas <--u Ordenar
+GestorTareas <--u Buscar
+
+@enduml
