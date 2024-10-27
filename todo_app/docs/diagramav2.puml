@@ -1,4 +1,4 @@
-@startuml diargama
+@startuml AppTareas
 
 enum Prioridad {
     Alta
