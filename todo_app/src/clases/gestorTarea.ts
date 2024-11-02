@@ -1,6 +1,6 @@
-import { Ordedar } from "../algoritmo/ordenar";
+import { Ordedar } from "../interfaces/ordenar";
 import { Prioridad } from "../enums/ePrioridad";
-import { Tarea } from "../tarea.ts/tarea";
+import { Tarea } from "./tarea";
 
 export class GestorTarea {
     private tarea:Array<Tarea>;
@@ -9,6 +9,10 @@ export class GestorTarea {
     constructor(o:Ordedar) {
         this.tarea=[];
         this.ordenar=o;
+    }
+
+    public getTareas():Tarea[]{
+        return this.tarea;
     }
 
     public agregarTarea(t:Tarea) {

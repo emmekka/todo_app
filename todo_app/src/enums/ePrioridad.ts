@@ -1,5 +1,5 @@
 export enum Prioridad {
-    Alta,
-    Media,
-    Baja
+    ALTA,
+    MEDIA,
+    BAJA
 }

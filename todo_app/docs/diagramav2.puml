@@ -1,19 +1,29 @@
 @startuml AppTareas
 
 enum Prioridad {
-    Alta
-    Media
-    Baja
+    ALTA
+    MEDIA
+    BAJA
 }
 
 enum Categoria {
-    Trabajo
-    Personal
+    TRABAJO
+    PERSONAL
+    RECADOS
 }
 
 enum EstadoTarea {
-    Pendiente
-    Completado
+    PENDIENTE
+    COMPLETADA
+}
+
+interface EditarTareaParam {
+    titulo?:string
+    descripcion?:string
+    fechaVencimiento?:Date
+    prioridad?:Prioridad
+    progreso?:number
+    tiempoDedicado?:number
 }
 
 class Tarea {
@@ -26,37 +36,54 @@ class Tarea {
     -progreso: number
     -categoria: Categoria
     -etiquetas: Etiqueta[]
+    -tiempoDedicado:number
 
-    +editarTarea()
-    +estaCompleta(): boolean
+    +editarTarea(params:EditarTareaParams):void
+    +agregarEtiqueta(e:Etiqueta):void 
 }
 
 
 class GestorTareas {
     -tareas: Tarea[]
-    -ordenar:Ordenar
-    -buscar:Buscar
     -estadistica:Estadisticas
 
-    +editorTareas(t:Tarea):void
     +agregarTarea(t: Tarea):void
-    +eliminarTarea(t:tarea):void
-    +buscarTarea(selector: (t: Tarea)=> string | Date): Tarea[]
-    +ordenarTareas(selector: (t: Tarea) => string | Date | Prioridad): Tarea[]
+    +eliminarTarea(t:Tarea):void
+    +buscarTarea(t:Tarea, a:AlgoritmoBusqueda):Tarea
+    +ordenarTareas(a:AlgoritmoOrdenamiento):Tarea[]
     +obtenerEstadisticas(): Estadisticas
 }
 
-class Buscar {
-    +buscar(t:Array<Tarea>, selector: (t: Tarea)=> string | Date)
+interface AlgoritmoBusqueda {
+    <i>buscar(t:Tarea):void
 }
 
-class Ordenar {
-    +ordenar(t:Array<Tarea>, selector: (t: Tarea) => string | Date | Prioridad):void
+class BusquedaTitulo implements AlgoritmoBusqueda{
+    +buscar(t:Tarea):void
 }
+
+class BusquedaVencimiento implements AlgoritmoBusqueda{
+    +buscar(t:Tarea):void
+}
+
+interface AlgoritmoOrdenamiento {
+    <i>ordenar(t:Array<Tarea>):void
+}
+
+class OrdenFecha implements AlgoritmoOrdenamiento{
+    +ordenar(t:Array<Tarea>):void
+}
+
+class OrdenTitulo implements AlgoritmoOrdenamiento{
+    +ordenar(t:Array<Tarea>):void
+}
+
+class OrdenPrioridad implements AlgoritmoOrdenamiento{
+    +ordenar(t:Array<Tarea>):void
+}
+
 class Etiqueta {
     -nombre: string
-
-    +aplicarEtiqueta(tarea: Tarea):void
 }
 
 class Estadisticas {
@@ -68,12 +95,12 @@ class Estadisticas {
 }
 
 Tarea --> Categoria
-Tarea <-- Etiqueta
+Tarea *-- Etiqueta
 GestorTareas *.. Tarea
-GestorTareas <-- Estadisticas
+GestorTareas <--u Estadisticas
 Tarea --> Prioridad
 Tarea --> EstadoTarea
-GestorTareas <--u Ordenar
-GestorTareas <--u Buscar
-
+GestorTareas <---r AlgoritmoOrdenamiento
+GestorTareas <--l AlgoritmoBusqueda
+Tarea<..l EditarTareaParam
 @enduml

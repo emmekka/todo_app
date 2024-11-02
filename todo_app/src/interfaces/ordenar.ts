@@ -1,5 +1,5 @@
 import { Prioridad } from "../enums/ePrioridad";
-import { Tarea } from "../tarea.ts/tarea";
+import { Tarea } from "../clases/tarea";
 
 export class Ordedar {
     
