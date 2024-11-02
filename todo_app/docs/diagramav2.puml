@@ -55,15 +55,20 @@ class GestorTareas {
 }
 
 interface AlgoritmoBusqueda {
-    <i>buscar(t:Tarea):void
+    <i>buscar(t:Array<Tarea>, param:BuscadorParam):void
 }
 
 class BusquedaTitulo implements AlgoritmoBusqueda{
-    +buscar(t:Tarea):void
+    +buscar(t:Array<Tarea>, param:BuscadorParam):void
 }
 
-class BusquedaVencimiento implements AlgoritmoBusqueda{
-    +buscar(t:Tarea):void
+class BusquedaFecha implements AlgoritmoBusqueda{
+    +buscar(t:Array<Tarea>, param:BuscadorParam):void
+}
+
+interface BuscadorParam {
+    titulo:string
+    fecha:Date
 }
 
 interface AlgoritmoOrdenamiento {
@@ -103,4 +108,5 @@ Tarea --> EstadoTarea
 GestorTareas <---r AlgoritmoOrdenamiento
 GestorTareas <--l AlgoritmoBusqueda
 Tarea<..l EditarTareaParam
+BuscadorParam --> AlgoritmoBusqueda
 @enduml

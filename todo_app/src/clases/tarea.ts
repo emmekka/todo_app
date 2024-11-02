@@ -68,7 +68,7 @@ export class Tarea {
         return this.tiempoDedicado;
     }
 
-    public editarTarea(params: EditarTareaParam, p0?: string): void {
+    public editarTarea(params: EditarTareaParam): void {
         this.titulo = params.titulo ?? this.titulo;
         this.descripcion=params.descripcion ?? this.descripcion;
         this.fechaVencimiento = params.fechaVencimiento ?? this.fechaVencimiento;
