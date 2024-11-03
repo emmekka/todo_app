@@ -49,26 +49,26 @@ class GestorTareas {
 
     +agregarTarea(t: Tarea):void
     +eliminarTarea(t:Tarea):void
-    +buscarTarea(t:Tarea, a:AlgoritmoBusqueda):Tarea
-    +ordenarTareas(a:AlgoritmoOrdenamiento):Tarea[]
+    +buscarTarea(t:Tarea, a:AlgoritmoBusqueda):Tarea[]
+    +ordenarTareas(a:AlgoritmoOrdenamiento):void
     +obtenerEstadisticas(): Estadisticas
 }
 
 interface AlgoritmoBusqueda {
-    <i>buscar(t:Array<Tarea>, param:BuscadorParam):void
+    <i>buscar(t:Array<Tarea>, param:BuscadorParam):Tarea[]
 }
 
 class BusquedaTitulo implements AlgoritmoBusqueda{
-    +buscar(t:Array<Tarea>, param:BuscadorParam):void
+    +buscar(t:Array<Tarea>, param:BuscadorParam):Tarea[]
 }
 
 class BusquedaFecha implements AlgoritmoBusqueda{
-    +buscar(t:Array<Tarea>, param:BuscadorParam):void
+    +buscar(t:Array<Tarea>, param:BuscadorParam):Tarea[]
 }
 
 interface BuscadorParam {
-    titulo:string
-    fecha:Date
+    titulo?:string
+    fecha?:Date
 }
 
 interface AlgoritmoOrdenamiento {
