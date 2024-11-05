@@ -1,0 +1,29 @@
+@startuml GestorTarea
++---------------------+           +-------------------------+           
+|    Usuario          |           |     GestorTarea        |
++---------------------+           +-------------------------+
+         |                             |
+         |      crear GestorTarea()  | <--- Constructor
+         |---------------------------->|
+         |                             |
+         |       getTareas()          |
+         |---------------------------->|
+         |                             |
+         |       <Tarea[]>            | --- Devolver tarea
+         |                             |
+         |         agregarTarea(t)    |
+         |---------------------------->|
+         |                             |
+         |                             | --- Agregar tarea a lista
+         |                             |
+         |         ordenarTarea(a)     |
+         |---------------------------->|
+         |                             |
+         |      ordenar(this.tarea)   | --- Ordenar tareas
+         |                             |
+         |        buscarTarea(a,p)    |
+         |---------------------------->|
+         |                             |
+         |         <Tarea[]>           | --- Devolver resultado de búsqueda
+
+@enduml
