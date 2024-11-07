@@ -81,6 +81,10 @@ export class Tarea {
     public tareaCompleta() {
         if (this.progreso === 100) {
             this.estado = EstadoTarea.COMPLETADA;
+
+            if(this.progreso < 0 │ this.progreso > 100){
+                 throw new Error("no se puede asignar esos valores.")
+            }
         }
     }
 

@@ -7,7 +7,9 @@ export class OrdenTitulo implements AlgoritmoOrdenamiento{
         t.sort((a, b) => {
             const valorA = a.getTitulo();
             const valorB = b.getTitulo();
-            return valorA.localeCompare(valorB);   
+            return valorA.localeCompare(valorB); 
+            
+            
         });
     }
 }

@@ -1,29 +1,27 @@
 @startuml GestorTarea
-+---------------------+           +-------------------------+           
-|    Usuario          |           |     GestorTarea        |
-+---------------------+           +-------------------------+
-         |                             |
-         |      crear GestorTarea()  | <--- Constructor
-         |---------------------------->|
-         |                             |
-         |       getTareas()          |
-         |---------------------------->|
-         |                             |
-         |       <Tarea[]>            | --- Devolver tarea
-         |                             |
-         |         agregarTarea(t)    |
-         |---------------------------->|
-         |                             |
-         |                             | --- Agregar tarea a lista
-         |                             |
-         |         ordenarTarea(a)     |
-         |---------------------------->|
-         |                             |
-         |      ordenar(this.tarea)   | --- Ordenar tareas
-         |                             |
-         |        buscarTarea(a,p)    |
-         |---------------------------->|
-         |                             |
-         |         <Tarea[]>           | --- Devolver resultado de búsqueda
+actor User
+
+participant "GestorTarea" as GT
+participant "Tarea" as T
+participant "AlgoritmoOrdenamiento" as AO
+participant "AlgoritmoBusqueda" as AB
+participant "BuscadorParam" as BP
+
+User -> GT: Crear GestorTarea
+GT -> GT: Constructor()
+note right of GT: Inicializa tarea = []
+
+User -> GT: agregarTarea(t: Tarea)
+GT -> GT: this.tarea.push(t)
+
+User -> GT: getTareas()
+GT -> GT: return this.tarea
+
+User -> GT: ordenarTarea(a: AlgoritmoOrdenamiento)
+GT -> AO: ordenar(this.tarea)
+
+User -> GT: buscarTarea(a: AlgoritmoBusqueda, param: BuscadorParam)
+GT -> AB: buscar(this.tarea, param)
+AB -> GT: return resultados
 
 @enduml
