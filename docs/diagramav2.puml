@@ -35,7 +35,7 @@ class Tarea {
     -estado: EstadoTarea
     -progreso: number
     -categoria: Categoria
-    -etiquetas: Etiqueta[]
+    -etiquetas:Array<Etiqueta>
     -tiempoDedicado:number
 
     +editarTarea(params:EditarTareaParams):void
@@ -44,14 +44,14 @@ class Tarea {
 
 
 class GestorTareas {
-    -tareas: Tarea[]
-    -estadistica:Estadisticas
+    -tareas:Array<Tarea>
 
+    +crearTarea():Tarea
     +agregarTarea(t: Tarea):void
     +eliminarTarea(t:Tarea):void
     +buscarTarea(t:Tarea, a:AlgoritmoBusqueda):Tarea[]
     +ordenarTareas(a:AlgoritmoOrdenamiento):void
-    +obtenerEstadisticas(): Estadisticas
+    +obtenerEstadisticas(e:Estadistica): Estadistica
 }
 
 interface AlgoritmoBusqueda {
@@ -91,18 +91,23 @@ class Etiqueta {
     -nombre: string
 }
 
-class Estadisticas {
-    -tareasCompletadas: number
-    -tareasPendientes: number
-    -tiempoPromedio: number
+class Estadistica {
+    -tareasCompletadas:Array<Tarea>
+    -tareasPendientes:Array<Tarea>
+    -tiempoPromedio:number
+    -tasaFinalizacion:number
 
-    +calcularEstadisticas(tareas: Tarea[])
+    +calcularEstadisticas(tareas:Array<Tarea>):Estadistica
+    +listadoTareasCompletas(tareas:Array<Tarea>):Array<Tarea>
+    +listadoTareasPendientes(tareas:Array<Tarea>):Array<Tarea>
+    +calcularPromedioTiempo(tareas:Array<Tarea>):number
+    +calcularTasaFinalizacion(tareas:Array<Tarea>):number
 }
 
 Tarea --> Categoria
 Tarea *-- Etiqueta
 GestorTareas *.. Tarea
-GestorTareas <--u Estadisticas
+GestorTareas <--u Estadistica
 Tarea --> Prioridad
 Tarea --> EstadoTarea
 GestorTareas <---r AlgoritmoOrdenamiento
