@@ -1,13 +1,12 @@
 import { Categoria } from "../src/enums/eCategoria";
-import { Etiqueta } from "../src/clases/etiqueta";
 import { mock } from 'jest-mock-extended';
 import { Tarea } from "../src/clases/tarea";
-
+import { Marcador } from "../src/interfaces/marcador";
 
 describe('Tarea', () => {
     let tarea: Tarea;
-    let etiqueta = mock<Etiqueta>();
-    let etiqueta2 = mock<Etiqueta>();
+    let etiqueta = mock<Marcador>();
+    let etiqueta2 = mock<Marcador>();
 
     beforeEach(() => {
         tarea = new Tarea(Categoria.TRABAJO);
@@ -90,15 +89,15 @@ describe('Tarea', () => {
         expect(tarea.getEstado()).toBe("Completada");
     });
 
-    it('Debe poder agregar etiquetas', () => {
-        tarea.agregarEtiqueta(etiqueta);
-        tarea.agregarEtiqueta(etiqueta2);
-        expect(tarea.getEtiquetas().length).toBe(2);
+    it('Debe poder agregar Marcadores', () => {
+        tarea.agregarMarcador(etiqueta);
+        tarea.agregarMarcador(etiqueta2);
+        expect(tarea.getMarcador().length).toBe(2);
     });
 
-    it('Debe poder devolver las Etiquetas', () => {
-        tarea.agregarEtiqueta(etiqueta);
-        tarea.agregarEtiqueta(etiqueta2);
-        expect(tarea.getEtiquetas()).toEqual([etiqueta, etiqueta2]);
+    it('Debe poder devolver los Marcadores', () => {
+        tarea.agregarMarcador(etiqueta);
+        tarea.agregarMarcador(etiqueta2);
+        expect(tarea.getMarcador()).toEqual([etiqueta, etiqueta2]);
     });
 });

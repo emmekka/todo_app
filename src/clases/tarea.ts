@@ -3,23 +3,23 @@ import { EstadoTarea } from "../enums/eEstadoTarea";
 import { Prioridad } from "../enums/ePrioridad"
 import { ProgresoIncorrecto } from "../errores/progresoIncorrecto";
 import { EditarTareaParam } from "../interfaces/editParam";
-import { Etiqueta } from "./etiqueta";
+import { Marcador } from "../interfaces/marcador";
 
 export class Tarea {
-    private static contadorId: number=0
+    private static contadorId: number=0;
     private id:number;
     private titulo: string;
-    private descripcion:string
-    private fechaVencimiento?:Date
+    private descripcion:string;
+    private fechaVencimiento?:Date;
     private prioridad:Prioridad;
     private estado:EstadoTarea;
     private progreso:number;
     private categoria:Categoria;
-    private etiqueta:Array<Etiqueta>;
+    private marcador:Array<Marcador>;
     private tiempoDedicado:number;
 
     constructor(catego:Categoria) {
-        Tarea.contadorId++
+        Tarea.contadorId++;
         this.titulo="documento sin titulo";
         this.descripcion="";
         this.prioridad=Prioridad.BAJA;
@@ -27,7 +27,7 @@ export class Tarea {
         this.estado=EstadoTarea.PENDIENTE;
         this.progreso=0;
         this.categoria=catego;
-        this.etiqueta=[];
+        this.marcador=[];
         this.tiempoDedicado=0;
     }
 
@@ -63,17 +63,17 @@ export class Tarea {
         return this.categoria;
     }
 
-    public getEtiquetas():Array<Etiqueta> {
-        return this.etiqueta;
+    public getMarcador():Array<Marcador> {
+        return this.marcador;
     }
 
     public getTiempoDedicado():number {
         return this.tiempoDedicado;
     }
 
-    private setProgreso(p:number) {
+    private setProgreso(p:number):void {
         if (p < 0 || p > 100) {
-            throw new ProgresoIncorrecto
+            throw new ProgresoIncorrecto;
         }
         this.progreso=p;
     }
@@ -88,13 +88,13 @@ export class Tarea {
         this.tareaCompleta();
     }
     
-    public tareaCompleta() {
+    public tareaCompleta():void {
         if (this.progreso === 100) {
             this.estado = EstadoTarea.COMPLETADA;
         }
     }
 
-    public agregarEtiqueta(e:Etiqueta):void{
-        this.etiqueta.push(e);
+    public agregarMarcador(e:Marcador):void{
+        this.marcador.push(e);
     }
 }

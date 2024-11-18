@@ -8,8 +8,8 @@ export class Estadistica {
     private tareasCompletadas:Array<Tarea>;
     private tareasPendientes:Array<Tarea>;
     private tiempoPromedio:number;
-    private tasaFinalizacion:number
-    private promedioHelper:AlgoritmoTiempoPromedio
+    private tasaFinalizacion:number;
+    private promedioHelper:AlgoritmoTiempoPromedio;
     private finalizacionHelper:AlgoritmoTasaFinalizacion;
 
     constructor(f: AlgoritmoTasaFinalizacion, p: AlgoritmoTiempoPromedio) {
@@ -24,7 +24,7 @@ export class Estadistica {
     public calcularEstadisticas(t: Array<Tarea>):EstadisticaReturn {
         this.tareasCompletadas = this.listadoTareasCompletas(t);
         this.tareasPendientes = this.listadoTareasPendientes(t);
-        this.tasaFinalizacion = this.finalizacionHelper.calcularTasaFinalizacion(t, this)
+        this.tasaFinalizacion = this.finalizacionHelper.calcularTasaFinalizacion(t, this);
         this.tiempoPromedio = this.promedioHelper.calcularTiempoPromedio(t);
         return {
             tareasCompletadas: this.tareasCompletadas,
@@ -35,12 +35,12 @@ export class Estadistica {
     }
 
     public listadoTareasCompletas(t:Array<Tarea>):Array<Tarea>{
-        this.tareasCompletadas = t.filter(t => t.getEstado() === EstadoTarea.COMPLETADA)
+        this.tareasCompletadas = t.filter(t => t.getEstado() === EstadoTarea.COMPLETADA);
         return this.tareasCompletadas;
     }
 
     public listadoTareasPendientes(t: Array<Tarea>): Array<Tarea> {
-        this.tareasPendientes = t.filter(t => t.getEstado() === EstadoTarea.PENDIENTE)
+        this.tareasPendientes = t.filter(t => t.getEstado() === EstadoTarea.PENDIENTE);
         return this.tareasPendientes;
     }
 

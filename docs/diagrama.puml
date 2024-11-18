@@ -26,7 +26,15 @@ interface EditarTareaParam {
     tiempoDedicado?:number
 }
 
+interface EstadisticaRetorno {
+    tareasCompletadas:Tarea[];
+    tareasPendientes:Tarea[];
+    tiempoPromedio:number;
+    tasaFinalizacion:number;
+}
+
 class Tarea {
+    -_contadorId:number
     -id: number
     -titulo: string
     -descripcion: string
@@ -35,23 +43,24 @@ class Tarea {
     -estado: EstadoTarea
     -progreso: number
     -categoria: Categoria
-    -etiquetas:Array<Etiqueta>
+    -marcadores:Array<Marcador>
     -tiempoDedicado:number
 
     +editarTarea(params:EditarTareaParams):void
-    +agregarEtiqueta(e:Etiqueta):void 
+    +tareaComleta():void
+    +agregarMarcador(e:Marcador):void 
 }
 
 
 class GestorTareas {
     -tareas:Array<Tarea>
 
-    +crearTarea():Tarea
+    +crearTarea(c:Categoria):Tarea
     +agregarTarea(t: Tarea):void
     +eliminarTarea(t:Tarea):void
-    +buscarTarea(t:Tarea, a:AlgoritmoBusqueda):Tarea[]
+    +buscarTarea(a:BuscadorSetter, param:BuscadorParam):Tarea[]
     +ordenarTareas(a:AlgoritmoOrdenamiento):void
-    +obtenerEstadisticas(e:Estadistica): Estadistica
+    +obtenerEstadisticas(e:Estadistica):EstadisticaRetorno
 }
 
 interface AlgoritmoBusqueda {
@@ -66,6 +75,13 @@ class BusquedaFecha implements AlgoritmoBusqueda{
     +buscar(t:Array<Tarea>, param:BuscadorParam):Tarea[]
 }
 
+class BuscadorSetter {
+    -buscar:AlgoritmoBusqueda
+
+    +busquedaSetter(param:BuscadorParam)
+    busqueda(t:Array<Tarea>, param:BuscadorParam):Tarea[]
+}
+
 interface BuscadorParam {
     titulo?:string
     fecha?:Date
@@ -75,7 +91,7 @@ interface AlgoritmoOrdenamiento {
     <i>ordenar(t:Array<Tarea>):void
 }
 
-class OrdenFecha implements AlgoritmoOrdenamiento{
+class OrdenFecha {
     +ordenar(t:Array<Tarea>):void
 }
 
@@ -87,8 +103,29 @@ class OrdenPrioridad implements AlgoritmoOrdenamiento{
     +ordenar(t:Array<Tarea>):void
 }
 
+interface Marcador {
+    <i>getNombre():string
+}
+
 class Etiqueta {
     -nombre: string
+    +getNombre():string
+}
+
+interface AlgoritmoTasaFinalizacion {
+    <i>calcularTasaFinalizacion(tareas:Array<Tarea>, e:Estadistica):number
+}
+
+class TasaFinalizacion  {
+    +calcularTasaFinalizacion(tareas:Array<Tarea>, e:Estadistica):number
+}
+
+interface AlgoritmoTiempoPromedio {
+    <i>calcularPromedioTiempo(tareas:Array<Tarea>):number
+}
+
+class TiempoPromedio  {
+    +calcularPromedioTiempo(tareas:Array<Tarea>):number
 }
 
 class Estadistica {
@@ -96,22 +133,30 @@ class Estadistica {
     -tareasPendientes:Array<Tarea>
     -tiempoPromedio:number
     -tasaFinalizacion:number
+    -tiemproPromedioHelper:AlgoritmoTiempoPromedio
+    -tasaFinalizacionHelper:AlgoritmoTasaFinalizacion
 
-    +calcularEstadisticas(tareas:Array<Tarea>):Estadistica
+    +calcularEstadisticas(tareas:Array<Tarea>):EstadisticaRetorno
     +listadoTareasCompletas(tareas:Array<Tarea>):Array<Tarea>
     +listadoTareasPendientes(tareas:Array<Tarea>):Array<Tarea>
-    +calcularPromedioTiempo(tareas:Array<Tarea>):number
-    +calcularTasaFinalizacion(tareas:Array<Tarea>):number
 }
 
 Tarea --> Categoria
-Tarea *-- Etiqueta
-GestorTareas *.. Tarea
-GestorTareas <--u Estadistica
+Tarea *-- Marcador
+Marcador <|.. Etiqueta
+GestorTareas *.d. Tarea
+GestorTareas <-u- Estadistica
+EstadisticaRetorno<.. Estadistica
+Estadistica*--l AlgoritmoTasaFinalizacion
+TasaFinalizacion ..|>AlgoritmoTasaFinalizacion
+Estadistica*--r AlgoritmoTiempoPromedio
+TiempoPromedio..|>AlgoritmoTiempoPromedio
 Tarea --> Prioridad
 Tarea --> EstadoTarea
 GestorTareas <---r AlgoritmoOrdenamiento
-GestorTareas <--l AlgoritmoBusqueda
+GestorTareas <---l BuscadorSetter
+BuscadorSetter *--l AlgoritmoBusqueda
 Tarea<..l EditarTareaParam
-BuscadorParam --> AlgoritmoBusqueda
+BuscadorParam -r-> AlgoritmoBusqueda
+AlgoritmoOrdenamiento <|.r.OrdenFecha
 @enduml
