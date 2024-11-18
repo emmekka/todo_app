@@ -1,4 +1,7 @@
 import { EstadoTarea } from "../enums/eEstadoTarea";
+import { AlgoritmoTasaFinalizacion } from "../interfaces/algoritmoTasaFinalizacion";
+import { AlgoritmoTiempoPromedio } from "../interfaces/algoritmoTiempoPromedio";
+import { EstadisticaReturn } from "../interfaces/estadisticaRetorno";
 import { Tarea } from "./tarea";
 
 export class Estadistica {
@@ -6,20 +9,29 @@ export class Estadistica {
     private tareasPendientes:Array<Tarea>;
     private tiempoPromedio:number;
     private tasaFinalizacion:number
+    private promedioHelper:AlgoritmoTiempoPromedio
+    private finalizacionHelper:AlgoritmoTasaFinalizacion;
 
-    constructor() {
+    constructor(f: AlgoritmoTasaFinalizacion, p: AlgoritmoTiempoPromedio) {
         this.tareasCompletadas=[];
         this.tareasPendientes=[];
         this.tiempoPromedio=0;
         this.tasaFinalizacion=0;
+        this.promedioHelper=p;
+        this.finalizacionHelper=f;
     }
 
-    public calcularEstadisticas(t:Array<Tarea>):Estadistica {
+    public calcularEstadisticas(t: Array<Tarea>):EstadisticaReturn {
         this.tareasCompletadas = this.listadoTareasCompletas(t);
         this.tareasPendientes = this.listadoTareasPendientes(t);
-        this.tasaFinalizacion = this.calcularTasaFinalizacion(t);
-        this.tiempoPromedio = this.calcularPromedioTiempo(t);
-        return this; 
+        this.tasaFinalizacion = this.finalizacionHelper.calcularTasaFinalizacion(t, this)
+        this.tiempoPromedio = this.promedioHelper.calcularTiempoPromedio(t);
+        return {
+            tareasCompletadas: this.tareasCompletadas,
+            tareasPendientes: this.tareasPendientes,
+            tiempoPromedio: this.tiempoPromedio,
+            tasaFinalizacion: this.tasaFinalizacion,
+        }; 
     }
 
     public listadoTareasCompletas(t:Array<Tarea>):Array<Tarea>{
@@ -32,25 +44,4 @@ export class Estadistica {
         return this.tareasPendientes;
     }
 
-    public calcularTasaFinalizacion(t:Array<Tarea>):number{
-        const completadas= this.listadoTareasCompletas(t).length;
-        const total=t.length;
-        if (total===0) {
-            this.tasaFinalizacion=0;
-        } else {
-            this.tasaFinalizacion = (completadas / total)*100;
-        }
-        return parseFloat(this.tasaFinalizacion.toFixed(2)); 
-    }
-
-    public calcularPromedioTiempo(t:Array<Tarea>):number{
-        const tiempoTotal=t.reduce((total, tarea)=>total + tarea.getTiempoDedicado(), 0)
-        const totalTareas=t.length;
-        if (totalTareas===0) {
-            this.tiempoPromedio=0;
-        } else {
-            this.tiempoPromedio=tiempoTotal/totalTareas;
-        }
-        return this.tiempoPromedio;
-    }
 }

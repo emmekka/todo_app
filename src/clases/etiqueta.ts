@@ -2,7 +2,7 @@ export class Etiqueta {
     private nombre:string;
 
     constructor(n:string) {
-        this.nombre=n
+        this.nombre=n;
     }
 
     public getNombre():string {

@@ -1,10 +1,12 @@
 import { Categoria } from "../enums/eCategoria";
 import { EstadoTarea } from "../enums/eEstadoTarea";
 import { Prioridad } from "../enums/ePrioridad"
+import { ProgresoIncorrecto } from "../errores/progresoIncorrecto";
 import { EditarTareaParam } from "../interfaces/editParam";
 import { Etiqueta } from "./etiqueta";
 
 export class Tarea {
+    private static contadorId: number=0
     private id:number;
     private titulo: string;
     private descripcion:string
@@ -16,11 +18,12 @@ export class Tarea {
     private etiqueta:Array<Etiqueta>;
     private tiempoDedicado:number;
 
-    constructor(id:number,catego:Categoria) {
-        this.titulo="";
+    constructor(catego:Categoria) {
+        Tarea.contadorId++
+        this.titulo="documento sin titulo";
         this.descripcion="";
         this.prioridad=Prioridad.BAJA;
-        this.id=id;
+        this.id=Tarea.contadorId;
         this.estado=EstadoTarea.PENDIENTE;
         this.progreso=0;
         this.categoria=catego;
@@ -68,13 +71,20 @@ export class Tarea {
         return this.tiempoDedicado;
     }
 
+    private setProgreso(p:number) {
+        if (p < 0 || p > 100) {
+            throw new ProgresoIncorrecto
+        }
+        this.progreso=p;
+    }
+
     public editarTarea(params: EditarTareaParam): void {
         this.titulo = params.titulo ?? this.titulo;
         this.descripcion=params.descripcion ?? this.descripcion;
         this.fechaVencimiento = params.fechaVencimiento ?? this.fechaVencimiento;
         this.prioridad= params.prioridad ?? this.prioridad;
         this.tiempoDedicado=params.tiempoDedicado ?? this.tiempoDedicado;
-        this.progreso=params.progreso ?? this.progreso;
+        this.setProgreso(params.progreso ?? this.progreso);
         this.tareaCompleta();
     }
     

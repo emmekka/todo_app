@@ -1,7 +1,8 @@
 import { Categoria } from "../enums/eCategoria";
-import { AlgoritmoBusqueda } from "../interfaces/algoritmoBusqueda";
 import { BuscadorParam } from "../interfaces/buscadorParam";
+import { EstadisticaReturn } from "../interfaces/estadisticaRetorno";
 import { AlgoritmoOrdenamiento } from "../interfaces/ordenar";
+import { BuscadorSetter } from "./buscadorSetter";
 import { Estadistica } from "./estadistica";
 import { Tarea } from "./tarea";
 
@@ -12,10 +13,9 @@ export class GestorTarea {
         this.tarea=[];
     }
 
-    public crearTarea(nroId:number, categoria:Categoria):Tarea {
-        const tarea= new Tarea(nroId,categoria)
-        this.agregarTarea(tarea)
-        return tarea
+    public crearTarea(categoria:Categoria):Tarea {
+        const tarea= new Tarea(categoria);
+        return tarea;
     }
 
     public getTareas():Tarea[]{
@@ -27,18 +27,18 @@ export class GestorTarea {
     }
 
     public eliminarTarea(t:Tarea) {
-        this.tarea.splice(this.tarea.indexOf(t),1)
+        this.tarea.splice(this.tarea.indexOf(t),1);
     }
 
-    public obtenerEstadisticas(e:Estadistica):Estadistica {
-        return e.calcularEstadisticas(this.tarea)
+    public obtenerEstadisticas(e:Estadistica):EstadisticaReturn {
+        return e.calcularEstadisticas(this.tarea);
     }
 
     public ordenarTarea(a:AlgoritmoOrdenamiento):void {
         a.ordenar(this.tarea);
     }
 
-    public buscarTarea(a:AlgoritmoBusqueda, param:BuscadorParam):Tarea[] {
-        return a.buscar(this.tarea, param)
+    public buscarTarea(a:BuscadorSetter, param:BuscadorParam):Tarea[] {
+        return a.busqueda(this.tarea, param);
     }
 }

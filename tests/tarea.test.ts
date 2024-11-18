@@ -10,7 +10,7 @@ describe('Tarea', () => {
     let etiqueta2 = mock<Etiqueta>();
 
     beforeEach(() => {
-        tarea = new Tarea(1, Categoria.TRABAJO);
+        tarea = new Tarea(Categoria.TRABAJO);
         tarea['titulo'] = "tarea 1";
         tarea['descripcion'] = "loca loca";
         etiqueta.getNombre.mockReturnValue("trabajoso");
@@ -18,6 +18,7 @@ describe('Tarea', () => {
     });
 
     it('Debe poder devolver el Id', () => {
+        //se autoincrementa desde el contructor
         expect(tarea.getId()).toBe(1);
     });
 
@@ -62,6 +63,19 @@ describe('Tarea', () => {
         //Por defecto el tiempo dedicado es 0;
         expect(tarea.getTiempoDedicado()).toBe(0);
     });
+
+    it('Debe poder setear su progreso', () => {
+        tarea['setProgreso'](10);
+        expect(tarea.getProgreso()).toBe(10);
+    })
+
+    it('Si el progreso es menor que 0 debe tirar un error', () => {
+        expect(()=>tarea['setProgreso'](-1)).toThrow();
+    })
+
+    it('Si el progreso es mayor que 100 debe tirar un error', () => {
+        expect(()=>tarea['setProgreso'](101)).toThrow();
+    })
 
     it('Debe poder editar solo los campos elegidos de las tareas', () => {
         tarea.editarTarea({titulo: "tarea dificil"});
