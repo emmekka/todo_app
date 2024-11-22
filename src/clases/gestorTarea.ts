@@ -5,7 +5,9 @@ import { AlgoritmoOrdenamiento } from "../interfaces/ordenar";
 import { BuscadorSetter } from "./buscadorSetter";
 import { Estadistica } from "./estadistica";
 import { Tarea } from "./tarea";
-
+/**
+ * el gestor de tarea como su nombre indica es el que se encarga tanto de crear la tarea como el de poder buscar u ordenar segun lo pida el usario.
+ */
 export class GestorTarea {
     private tarea:Array<Tarea>;
 

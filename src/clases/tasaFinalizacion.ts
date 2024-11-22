@@ -1,7 +1,9 @@
 import { AlgoritmoTasaFinalizacion } from "../interfaces/algoritmoTasaFinalizacion";
 import { Estadistica } from "./estadistica";
 import { Tarea } from "./tarea";
-
+/**
+ * esta clase muestra el total de tareas
+ */
 export class TasaFinalizacion implements AlgoritmoTasaFinalizacion {
     public calcularTasaFinalizacion(t: Array<Tarea>, e:Estadistica): number {
         const tareasCompletas = e.listadoTareasCompletas(t).length;

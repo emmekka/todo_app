@@ -3,7 +3,9 @@ import { AlgoritmoTasaFinalizacion } from "../interfaces/algoritmoTasaFinalizaci
 import { AlgoritmoTiempoPromedio } from "../interfaces/algoritmoTiempoPromedio";
 import { EstadisticaReturn } from "../interfaces/estadisticaRetorno";
 import { Tarea } from "./tarea";
-
+/**
+ * la idea de esta clase es que el usario pueda ver el promedio de tareas que completadas y incompletas
+ */
 export class Estadistica {
     private tareasCompletadas:Array<Tarea>;
     private tareasPendientes:Array<Tarea>;
@@ -20,7 +22,14 @@ export class Estadistica {
         this.promedioHelper=p;
         this.finalizacionHelper=f;
     }
-
+/**
+ * este metodo recibe el array de tareas y se fija el total de tareas completas y de tareas incompletas ademas de calcular el tiempo promedio que llevo 
+ * hacer cada tarea o cuanto tiempo esta tardando en el caso que no se haya completado.
+ * @param t 
+ * @returns estadiscicaReturn
+ * 
+ * lo que hace el return en este caso es devolver actualizado los campos una vez analizados.
+ */
     public calcularEstadisticas(t: Array<Tarea>):EstadisticaReturn {
         this.tareasCompletadas = this.listadoTareasCompletas(t);
         this.tareasPendientes = this.listadoTareasPendientes(t);
